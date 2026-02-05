@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Soft Play</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <main>
+        <section id="home" class="view is-active" data-view="home">
+          <header class="home-header">
+            <p class="eyebrow">Soft Play</p>
+            <h1>Little touch moments</h1>
+            <p class="subtitle">A calm shelf of tiny, tactile games. Tap one to begin.</p>
+          </header>
+
+          <div class="card-grid">
+            <button class="card is-active" data-route="pop-bubbles">
+              <div class="card-top">
+                <span class="card-title">Pop the Bubbles</span>
+                <span class="card-tag">Live</span>
+              </div>
+              <div class="card-preview preview-bubbles" aria-hidden="true"></div>
+              <p class="card-desc">Soap bubbles drift softly. Tap to pop.</p>
+            </button>
+
+            <button class="card" disabled>
+              <div class="card-top">
+                <span class="card-title">Color Spill</span>
+                <span class="card-tag muted">Soon</span>
+              </div>
+              <div class="card-preview preview-fill" aria-hidden="true"></div>
+              <p class="card-desc">Slow gradients bloom and mingle.</p>
+            </button>
+
+            <button class="card" disabled>
+              <div class="card-top">
+                <span class="card-title">Tap to Grow</span>
+                <span class="card-tag muted">Soon</span>
+              </div>
+              <div class="card-preview preview-grow" aria-hidden="true"></div>
+              <p class="card-desc">Little seeds become soft shapes.</p>
+            </button>
+
+            <button class="card" disabled>
+              <div class="card-top">
+                <span class="card-title">Catch the Fall</span>
+                <span class="card-tag muted">Soon</span>
+              </div>
+              <div class="card-preview preview-fall" aria-hidden="true"></div>
+              <p class="card-desc">Gentle taps guide falling light.</p>
+            </button>
+
+            <button class="card" disabled>
+              <div class="card-top">
+                <span class="card-title">Balloon Balance</span>
+                <span class="card-tag muted">Soon</span>
+              </div>
+              <div class="card-preview preview-balance" aria-hidden="true"></div>
+              <p class="card-desc">Keep a floating shape in calm balance.</p>
+            </button>
+
+            <button class="card" disabled>
+              <div class="card-top">
+                <span class="card-title">Calm Touch</span>
+                <span class="card-tag muted">Soon</span>
+              </div>
+              <div class="card-preview preview-calm" aria-hidden="true"></div>
+              <p class="card-desc">Slow ripples reward presence.</p>
+            </button>
+          </div>
+        </section>
+
+        <section id="game" class="view" data-view="game" aria-live="polite">
+          <button id="homeButton" class="home-button" type="button">← Home</button>
+          <div id="gameMount" class="game-mount"></div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
