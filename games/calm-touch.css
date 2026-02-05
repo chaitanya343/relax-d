@@ -1,0 +1,43 @@
+#game {
+  background: transparent;
+}
+
+.game-mount {
+  position: relative;
+  overflow: hidden;
+}
+
+.calm-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.calm-intro {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  font-size: clamp(1.1rem, 3.2vw, 1.6rem);
+  letter-spacing: 0.05em;
+  color: rgba(72, 80, 105, 0.7);
+  opacity: 0;
+  animation: calmIntro 2s ease-in-out forwards;
+}
+
+@keyframes calmIntro {
+  0% {
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

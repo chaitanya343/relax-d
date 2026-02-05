@@ -15,6 +15,12 @@ const routes = {
     module: './games/pop-dots.js',
     css: './games/pop-dots.css',
   },
+  'calm-touch': {
+    name: 'calm-touch',
+    title: 'Calm Touch',
+    module: './games/calm-touch.js',
+    css: './games/calm-touch.css',
+  },
 };
 
 let currentCleanup = null;
