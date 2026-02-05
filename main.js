@@ -21,6 +21,18 @@ const routes = {
     module: './games/calm-touch.js',
     css: './games/calm-touch.css',
   },
+  'tide-wash': {
+    name: 'tide-wash',
+    title: 'Tide Wash',
+    module: './games/tide-wash.js',
+    css: './games/tide-wash.css',
+  },
+  'pour-spread': {
+    name: 'pour-spread',
+    title: 'Pour & Spread',
+    module: './games/pour-spread.js',
+    css: './games/pour-spread.css',
+  },
 };
 
 let currentCleanup = null;
