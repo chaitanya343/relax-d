@@ -33,6 +33,42 @@ const routes = {
     module: './games/pour-spread.js',
     css: './games/pour-spread.css',
   },
+  'tap-grow': {
+    name: 'tap-grow',
+    title: 'Tap to Grow',
+    module: './games/tap-grow.js',
+    css: './games/tap-grow.css',
+  },
+  'catch-fall': {
+    name: 'catch-fall',
+    title: 'Catch the Fall',
+    module: './games/catch-fall.js',
+    css: './games/catch-fall.css',
+  },
+  'balloon-balance': {
+    name: 'balloon-balance',
+    title: 'Balloon Balance',
+    module: './games/balloon-balance.js',
+    css: './games/balloon-balance.css',
+  },
+  'breath-sync': {
+    name: 'breath-sync',
+    title: 'Breath Sync',
+    module: './games/breath-sync.js',
+    css: './games/breath-sync.css',
+  },
+  'warm-glow': {
+    name: 'warm-glow',
+    title: 'Warm Glow',
+    module: './games/warm-glow.js',
+    css: './games/warm-glow.css',
+  },
+  'sand-garden': {
+    name: 'sand-garden',
+    title: 'Sand Garden',
+    module: './games/sand-garden.js',
+    css: './games/sand-garden.css',
+  },
 };
 
 let currentCleanup = null;
@@ -145,3 +181,17 @@ if (!window.location.hash) {
 }
 
 handleRouteChange();
+
+// Theme Toggle
+const themeToggle = document.getElementById('themeToggle');
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+  document.documentElement.setAttribute('data-theme', savedTheme);
+}
+
+themeToggle?.addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+});

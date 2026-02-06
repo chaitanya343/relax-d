@@ -1,0 +1,46 @@
+#game {
+    background: #0d0d12;
+}
+
+.game-mount {
+    position: relative;
+    overflow: hidden;
+}
+
+.glow-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+}
+
+.glow-intro {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    font-size: clamp(1.1rem, 3.2vw, 1.6rem);
+    letter-spacing: 0.05em;
+    color: rgba(255, 220, 180, 0.7);
+    opacity: 0;
+    animation: glowIntro 2.5s ease-in-out forwards;
+}
+
+@keyframes glowIntro {
+    0% {
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}

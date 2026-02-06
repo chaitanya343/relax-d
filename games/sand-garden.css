@@ -1,0 +1,75 @@
+#game {
+    background: #e8dcc8;
+}
+
+.game-mount {
+    position: relative;
+    overflow: hidden;
+}
+
+.sand-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+    cursor: crosshair;
+}
+
+.sand-intro {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    font-size: clamp(1.1rem, 3.2vw, 1.6rem);
+    letter-spacing: 0.05em;
+    color: rgba(120, 100, 70, 0.7);
+    opacity: 0;
+    animation: sandIntro 2s ease-in-out forwards;
+}
+
+@keyframes sandIntro {
+    0% {
+        opacity: 0;
+    }
+
+    35% {
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.sand-reset {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 10;
+    border: none;
+    background: rgba(180, 160, 130, 0.85);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    box-shadow: 0 6px 20px rgba(120, 100, 70, 0.25);
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sand-reset:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(120, 100, 70, 0.35);
+}
+
+.sand-reset:active {
+    transform: translateY(0);
+}

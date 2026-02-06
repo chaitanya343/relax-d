@@ -12,11 +12,22 @@
   <div id="app">
     <main>
       <section id="home" class="view is-active" data-view="home">
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">
+          <span class="toggle-icon sun">☀️</span>
+          <span class="toggle-icon moon">🌙</span>
+        </button>
+
         <header class="home-header">
+          <div class="header-decoration">
+            <span class="deco-dot"></span>
+            <span class="deco-dot"></span>
+            <span class="deco-dot"></span>
+          </div>
           <p class="eyebrow">Made for my wife with love</p>
-          <h1>Little touch moments</h1>
-          <p class="subtitle">A calm shelf of tiny, tactile games. Tap one to begin.</p>
-          <h2>Happy 3rd anniversary Divya!</h2>
+          <h1>Little touch<br><span class="title-accent">moments</span></h1>
+          <p class="subtitle">A calm shelf of tiny, tactile games.<br>Tap one to begin.</p>
+          <div class="header-divider"></div>
+          <h2 class="anniversary">Happy 3rd anniversary <span class="heart">♥</span> Divya!</h2>
         </header>
 
         <div class="card-grid">
@@ -56,33 +67,59 @@
             <p class="card-desc">Hold to pour soft color.</p>
           </button>
 
-          <button class="card" disabled>
+          <button class="card is-active" data-route="tap-grow">
             <div class="card-top">
               <span class="card-title">Tap to Grow</span>
-              <span class="card-tag muted">Soon</span>
+              <span class="card-tag">Live</span>
             </div>
-            <div class="card-preview preview-grow" aria-hidden="true"></div>
+            <div class="card-preview preview-seed" aria-hidden="true"></div>
             <p class="card-desc">Little seeds become soft shapes.</p>
           </button>
 
-          <button class="card" disabled>
+          <button class="card is-active" data-route="catch-fall">
             <div class="card-top">
               <span class="card-title">Catch the Fall</span>
-              <span class="card-tag muted">Soon</span>
+              <span class="card-tag">Live</span>
             </div>
-            <div class="card-preview preview-balance" aria-hidden="true"></div>
+            <div class="card-preview preview-stars" aria-hidden="true"></div>
             <p class="card-desc">Gentle taps guide falling light.</p>
           </button>
 
-          <button class="card" disabled>
+          <button class="card is-active" data-route="balloon-balance">
             <div class="card-top">
               <span class="card-title">Balloon Balance</span>
-              <span class="card-tag muted">Soon</span>
+              <span class="card-tag">Live</span>
             </div>
-            <div class="card-preview preview-calm" aria-hidden="true"></div>
+            <div class="card-preview preview-balloon" aria-hidden="true"></div>
             <p class="card-desc">Keep a floating shape in calm balance.</p>
           </button>
 
+          <button class="card is-active" data-route="breath-sync">
+            <div class="card-top">
+              <span class="card-title">Breath Sync</span>
+              <span class="card-tag">Live</span>
+            </div>
+            <div class="card-preview preview-breath" aria-hidden="true"></div>
+            <p class="card-desc">Box breathing to find your center.</p>
+          </button>
+
+          <button class="card is-active" data-route="warm-glow">
+            <div class="card-top">
+              <span class="card-title">Warm Glow</span>
+              <span class="card-tag">Live</span>
+            </div>
+            <div class="card-preview preview-glow" aria-hidden="true"></div>
+            <p class="card-desc">Hold to create warm spreading light.</p>
+          </button>
+
+          <button class="card is-active" data-route="sand-garden">
+            <div class="card-top">
+              <span class="card-title">Sand Garden</span>
+              <span class="card-tag">Live</span>
+            </div>
+            <div class="card-preview preview-sand" aria-hidden="true"></div>
+            <p class="card-desc">Trace patterns in zen sand.</p>
+          </button>
 
         </div>
       </section>

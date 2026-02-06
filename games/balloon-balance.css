@@ -1,0 +1,50 @@
+#game {
+    background: linear-gradient(180deg, #e8f4ff 0%, #d4eaff 100%);
+}
+
+[data-theme="dark"] #game {
+    background: linear-gradient(180deg, #1a2535 0%, #0f1520 100%);
+}
+
+.game-mount {
+    position: relative;
+    overflow: hidden;
+}
+
+.balloon-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+}
+
+.balloon-intro {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    font-size: clamp(1.1rem, 3.2vw, 1.6rem);
+    letter-spacing: 0.05em;
+    color: rgba(100, 130, 160, 0.7);
+    opacity: 0;
+    animation: balloonIntro 2s ease-in-out forwards;
+}
+
+@keyframes balloonIntro {
+    0% {
+        opacity: 0;
+    }
+
+    35% {
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}

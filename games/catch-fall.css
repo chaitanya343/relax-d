@@ -1,0 +1,46 @@
+#game {
+    background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%);
+}
+
+.game-mount {
+    position: relative;
+    overflow: hidden;
+}
+
+.fall-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+}
+
+.fall-intro {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    font-size: clamp(1.1rem, 3.2vw, 1.6rem);
+    letter-spacing: 0.05em;
+    color: rgba(255, 240, 200, 0.7);
+    opacity: 0;
+    animation: fallIntro 2.5s ease-in-out forwards;
+}
+
+@keyframes fallIntro {
+    0% {
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}

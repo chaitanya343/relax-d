@@ -162,8 +162,9 @@ export function mount(container) {
     const radius = lerp(ripple.start, ripple.end, progress);
     const alpha = Math.max(0, 1 - Math.pow(progress, 2.1));
 
+    // Central fill with softer gradient
     ctx.beginPath();
-    const innerRadius = radius * 0.72;
+    const innerRadius = radius * 0.65;
     const fillGradient = ctx.createRadialGradient(
       ripple.x,
       ripple.y,
@@ -173,44 +174,72 @@ export function mount(container) {
       innerRadius
     );
     fillGradient.addColorStop(0, rgba(ripple.fill, 0));
-    fillGradient.addColorStop(0.35, rgba(ripple.fill, 0.18 * alpha));
-    fillGradient.addColorStop(1, rgba(ripple.fill, 0.9 * alpha));
+    fillGradient.addColorStop(0.4, rgba(ripple.fill, 0.15 * alpha));
+    fillGradient.addColorStop(0.7, rgba(ripple.fill, 0.35 * alpha));
+    fillGradient.addColorStop(1, rgba(ripple.fill, 0.8 * alpha));
     ctx.fillStyle = fillGradient;
     ctx.arc(ripple.x, ripple.y, innerRadius, 0, Math.PI * 2);
     ctx.fill();
 
+    // Multiple concentric rings with varying opacity
+    const ringCount = 4;
+    for (let r = 0; r < ringCount; r++) {
+      const ringProgress = (r + 1) / (ringCount + 1);
+      const ringRadius = radius * ringProgress;
+      const ringAlpha = alpha * (1 - ringProgress * 0.5);
+      const lineWidth = 2.5 - r * 0.4;
+
+      ctx.beginPath();
+      ctx.strokeStyle = rgba(ripple.ring, ringAlpha * 0.6);
+      ctx.lineWidth = lineWidth;
+
+      // Draw wavy ring using sin waves
+      const waveCount = 12 + r * 4;
+      const waveAmp = 3 + r * 1.5;
+      const phaseOffset = progress * Math.PI * 2 + r * 0.5;
+
+      for (let i = 0; i <= 360; i += 2) {
+        const angle = (i * Math.PI) / 180;
+        const wave = Math.sin(angle * waveCount + phaseOffset) * waveAmp * (1 - progress);
+        const px = ripple.x + Math.cos(angle) * (ringRadius + wave);
+        const py = ripple.y + Math.sin(angle) * (ringRadius + wave);
+        if (i === 0) {
+          ctx.moveTo(px, py);
+        } else {
+          ctx.lineTo(px, py);
+        }
+      }
+      ctx.closePath();
+      ctx.stroke();
+    }
+
+    // Outer glow ring with shadow
     ctx.save();
-    ctx.shadowBlur = 16;
-    ctx.shadowColor = rgba(ripple.ring, 0.35 * alpha);
+    ctx.shadowBlur = 20;
+    ctx.shadowColor = rgba(ripple.ring, 0.3 * alpha);
     ctx.beginPath();
-    ctx.strokeStyle = rgba(ripple.ring, 0.8 * alpha);
-    ctx.lineWidth = 2.8;
-    ctx.arc(ripple.x, ripple.y, radius * 0.96, 0, Math.PI * 2);
+    ctx.strokeStyle = rgba(ripple.ring, 0.9 * alpha);
+    ctx.lineWidth = 3;
+    ctx.arc(ripple.x, ripple.y, radius, 0, Math.PI * 2);
     ctx.stroke();
     ctx.restore();
 
-    ctx.beginPath();
-    ctx.strokeStyle = rgba(ripple.ring, 1.1 * alpha);
-    ctx.lineWidth = 2.6;
-    ctx.arc(ripple.x, ripple.y, radius, 0, Math.PI * 2);
-    ctx.stroke();
+    // Petal-like decorative elements
+    if (progress < 0.7) {
+      const petalCount = 6;
+      const petalAlpha = alpha * (1 - progress / 0.7) * 0.4;
+      for (let p = 0; p < petalCount; p++) {
+        const petalAngle = (p / petalCount) * Math.PI * 2 + progress * Math.PI;
+        const petalDist = radius * 0.85;
+        const px = ripple.x + Math.cos(petalAngle) * petalDist;
+        const py = ripple.y + Math.sin(petalAngle) * petalDist;
 
-    const breakPoint = 0.55;
-    const dash = progress > breakPoint;
-    const dashAlpha = dash ? 0.35 * alpha : 0.5 * alpha;
-    const dashRadius = radius * 0.62;
-
-    ctx.beginPath();
-    ctx.strokeStyle = rgba(ripple.ring, dashAlpha);
-    ctx.lineWidth = 1.4;
-    if (dash) {
-      ctx.setLineDash([10, 12]);
+        ctx.beginPath();
+        ctx.fillStyle = rgba(ripple.fill, petalAlpha);
+        ctx.arc(px, py, 4 + (1 - progress) * 6, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
-    ctx.arc(ripple.x, ripple.y, dashRadius, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    ctx.setLineDash([]);
   }
 
   function frame(time) {

@@ -151,38 +151,112 @@ export function mount(container) {
   function drawBubble(bubble, time) {
     const pulse = 1 + Math.sin(time * 0.0015 + bubble.seed) * 0.03;
     const r = bubble.r * pulse;
+
+    ctx.save();
+
+    // Outer glow
+    const glowGrad = ctx.createRadialGradient(bubble.x, bubble.y, r * 0.8, bubble.x, bubble.y, r * 1.5);
+    glowGrad.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
+    glowGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    ctx.beginPath();
+    ctx.fillStyle = glowGrad;
+    ctx.arc(bubble.x, bubble.y, r * 1.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Main bubble gradient
     const grad = ctx.createRadialGradient(
-      bubble.x - r * 0.3,
-      bubble.y - r * 0.3,
-      r * 0.2,
+      bubble.x - r * 0.35,
+      bubble.y - r * 0.35,
+      r * 0.1,
       bubble.x,
       bubble.y,
       r
     );
-    grad.addColorStop(0, 'rgba(255, 255, 255, 0.85)');
-    grad.addColorStop(0.35, bubble.color.fill);
-    grad.addColorStop(1, 'rgba(255, 255, 255, 0.08)');
+    grad.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
+    grad.addColorStop(0.25, bubble.color.fill);
+    grad.addColorStop(0.7, bubble.color.fill.replace('0.6', '0.35'));
+    grad.addColorStop(1, 'rgba(255, 255, 255, 0.15)');
 
     ctx.beginPath();
     ctx.fillStyle = grad;
     ctx.arc(bubble.x, bubble.y, r, 0, Math.PI * 2);
     ctx.fill();
 
+    // Rainbow shimmer effect
+    const shimmerAngle = time * 0.001 + bubble.seed;
+    const shimmerX = bubble.x + Math.cos(shimmerAngle) * r * 0.4;
+    const shimmerY = bubble.y + Math.sin(shimmerAngle) * r * 0.3;
+    const shimmerGrad = ctx.createRadialGradient(shimmerX, shimmerY, 0, shimmerX, shimmerY, r * 0.5);
+    shimmerGrad.addColorStop(0, 'rgba(255, 180, 220, 0.25)');
+    shimmerGrad.addColorStop(0.5, 'rgba(180, 220, 255, 0.15)');
+    shimmerGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    ctx.beginPath();
+    ctx.fillStyle = shimmerGrad;
+    ctx.arc(bubble.x, bubble.y, r, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Rim with soft glow
     ctx.beginPath();
     ctx.strokeStyle = bubble.color.rim;
-    ctx.lineWidth = 1.2;
+    ctx.lineWidth = 1.5;
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = bubble.color.rim;
     ctx.arc(bubble.x, bubble.y, r, 0, Math.PI * 2);
     ctx.stroke();
+
+    // Highlight arc
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+    ctx.lineWidth = 2;
+    ctx.shadowBlur = 0;
+    ctx.arc(bubble.x, bubble.y, r * 0.8, -Math.PI * 0.8, -Math.PI * 0.4);
+    ctx.stroke();
+
+    // Small highlight dot
+    ctx.beginPath();
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+    ctx.arc(bubble.x - r * 0.35, bubble.y - r * 0.35, r * 0.12, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
   }
 
   function drawPop(pop) {
     const progress = pop.age / pop.life;
-    const radius = pop.start + progress * pop.spread;
-    ctx.beginPath();
-    ctx.strokeStyle = `rgba(180, 200, 230, ${1 - progress})`;
-    ctx.lineWidth = 1.6;
-    ctx.arc(pop.x, pop.y, radius, 0, Math.PI * 2);
-    ctx.stroke();
+    const eased = 1 - Math.pow(1 - progress, 2);
+    const radius = pop.start + eased * pop.spread;
+    const alpha = 1 - eased;
+
+    ctx.save();
+
+    // Multiple expanding rings
+    for (let i = 0; i < 3; i++) {
+      const ringDelay = i * 0.1;
+      const ringProgress = Math.max(0, progress - ringDelay);
+      if (ringProgress > 0) {
+        const ringRadius = pop.start + ringProgress * pop.spread * (1 + i * 0.3);
+        const ringAlpha = (1 - ringProgress) * (1 - i * 0.25);
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(180, 200, 230, ${ringAlpha})`;
+        ctx.lineWidth = 2 - i * 0.4;
+        ctx.arc(pop.x, pop.y, ringRadius, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
+
+    // Center flash
+    if (progress < 0.3) {
+      const flashAlpha = 1 - progress / 0.3;
+      const flashGrad = ctx.createRadialGradient(pop.x, pop.y, 0, pop.x, pop.y, pop.start);
+      flashGrad.addColorStop(0, `rgba(255, 255, 255, ${flashAlpha * 0.6})`);
+      flashGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      ctx.beginPath();
+      ctx.fillStyle = flashGrad;
+      ctx.arc(pop.x, pop.y, pop.start, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.restore();
   }
 
   function drawMist(particle) {
