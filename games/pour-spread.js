@@ -77,23 +77,46 @@ export function mount(container) {
     const radius = lerp(bloom.start, bloom.end, progress);
     const alpha = clamp(1 - Math.pow(progress, 2.0), 0, 1);
 
-    const innerRadius = radius * 0.92;
+    const innerRadius = radius * 0.64;
     ctx.fillStyle = rgba(bloom.fill, 0.98 * alpha);
     ctx.beginPath();
-    ctx.arc(bloom.x, bloom.y, innerRadius, 0, Math.PI * 2);
+    const wobbleSeed = bloom.seed ?? 0;
+    const wobble = 0.18 + (bloom.blob?.scale ?? 0.85) * 0.12;
+    const points = 20;
+    for (let i = 0; i <= points; i += 1) {
+      const angle = (Math.PI * 2 * i) / points;
+      const wave = Math.sin(angle * 3 + wobbleSeed) * wobble;
+      const wave2 = Math.cos(angle * 5 + wobbleSeed * 1.3) * (wobble * 0.6);
+      const r = innerRadius * (1 + wave + wave2);
+      const px = bloom.x + Math.cos(angle) * r;
+      const py = bloom.y + Math.sin(angle) * r;
+      if (i === 0) {
+        ctx.moveTo(px, py);
+      } else {
+        ctx.lineTo(px, py);
+      }
+    }
+    ctx.closePath();
     ctx.fill();
 
     if (bloom.blob) {
       const { offsets, scale } = bloom.blob;
       offsets.forEach((offset) => {
         ctx.beginPath();
-        ctx.arc(
-          bloom.x + offset.x,
-          bloom.y + offset.y,
-          innerRadius * scale,
-          0,
-          Math.PI * 2
-        );
+        for (let i = 0; i <= points; i += 1) {
+          const angle = (Math.PI * 2 * i) / points;
+          const wave = Math.sin(angle * 3 + wobbleSeed + offset.x * 0.12) * wobble * 0.9;
+          const wave2 = Math.cos(angle * 5 + wobbleSeed + offset.y * 0.12) * wobble * 0.7;
+          const r = innerRadius * scale * (1 + wave + wave2);
+          const px = bloom.x + offset.x + Math.cos(angle) * r;
+          const py = bloom.y + offset.y + Math.sin(angle) * r;
+          if (i === 0) {
+            ctx.moveTo(px, py);
+          } else {
+            ctx.lineTo(px, py);
+          }
+        }
+        ctx.closePath();
         ctx.fill();
       });
     }
@@ -107,18 +130,18 @@ export function mount(container) {
     ctx.stroke();
     ctx.setLineDash([]);
 
-    const streakCount = 14;
+    const streakCount = 20;
     for (let i = 0; i < streakCount; i += 1) {
       const angle = (Math.PI * 2 * i) / streakCount + (bloom.seed ?? 0);
-      const length = innerRadius * (0.07 + (i % 4) * 0.025);
-      const jitter = (i % 2 === 0 ? 1 : -1) * 2.5;
+      const length = innerRadius * (0.08 + (i % 5) * 0.03);
+      const jitter = (i % 2 === 0 ? 1 : -1) * 3.2;
       const sx = bloom.x + Math.cos(angle) * innerRadius * 0.84;
       const sy = bloom.y + Math.sin(angle) * innerRadius * 0.84;
       const ex = bloom.x + Math.cos(angle) * (innerRadius * 0.84 + length) + jitter;
       const ey = bloom.y + Math.sin(angle) * (innerRadius * 0.84 + length) - jitter;
       ctx.beginPath();
       ctx.strokeStyle = rgba(bloom.fill, 0.35 * alpha);
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 1.2;
       ctx.moveTo(sx, sy);
       ctx.lineTo(ex, ey);
       ctx.stroke();

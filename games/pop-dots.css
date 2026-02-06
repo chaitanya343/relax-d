@@ -9,17 +9,19 @@
 
 .intro-image {
   position: absolute;
-  top: 14px;
-  left: 14px;
-  width: min(15vmin, 15vw);
+  bottom: 16px;
+  left: 16px;
+  width: min(28vmin, 26vw);
   height: auto;
-  max-width: 15vmin;
-  max-height: 15vmin;
+  max-width: 28vmin;
+  max-height: 28vmin;
   object-fit: contain;
   opacity: 1;
   transition: opacity 0.8s ease;
   pointer-events: none;
-  filter: drop-shadow(0 6px 14px rgba(60, 60, 90, 0.18));
+  filter: drop-shadow(0 6px 14px rgba(60, 60, 90, 0.12));
+  mask-image: radial-gradient(circle at 45% 50%, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0.15) 68%, rgba(0, 0, 0, 0) 92%);
+  -webkit-mask-image: radial-gradient(circle at 45% 50%, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0.15) 68%, rgba(0, 0, 0, 0) 92%);
 }
 
 .intro-image.is-hidden {

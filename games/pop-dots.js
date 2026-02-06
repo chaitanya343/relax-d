@@ -46,7 +46,7 @@ export function mount(container) {
   const targetCount = 26;
   const introDuration = 3000;
   const respawnDuration = 2800;
-  let introStart = performance.now();
+  let introStart = null;
 
   function resize() {
     width = container.clientWidth;
@@ -66,8 +66,8 @@ export function mount(container) {
     }
     const containerRect = container.getBoundingClientRect();
     const imageRect = introImage.getBoundingClientRect();
-    emitter.x = imageRect.right - containerRect.left + 2;
-    emitter.y = imageRect.top - containerRect.top + imageRect.height * 0.5;
+    emitter.x = imageRect.right - containerRect.left - imageRect.width * 0.08;
+    emitter.y = imageRect.top - containerRect.top + imageRect.height * 0.6;
     emitter.x = Math.min(Math.max(emitter.x, 20), width - 20);
     emitter.y = Math.min(Math.max(emitter.y, 20), height - 20);
   }
@@ -117,12 +117,17 @@ export function mount(container) {
   }
 
   function seedIntroBubbles() {
+    if (!introImage.complete) {
+      return;
+    }
+    updateEmitter();
+    introStart = performance.now();
     while (bubbles.length < targetCount) {
       const bubble = createBubble({
         start: { x: emitter.x, y: emitter.y },
         launchedAt: introStart,
         launchDuration: introDuration,
-        launchDelay: randomBetween(0, 420),
+        launchDelay: randomBetween(80, 520),
       });
       if (bubble) {
         bubbles.push(bubble);
@@ -333,7 +338,7 @@ export function mount(container) {
     updatePops(delta);
     updateMist(delta);
     updateRespawns(time);
-    if (time - introStart > introDuration) {
+    if (introStart && time - introStart > introDuration) {
       fillBubbles();
     }
 
@@ -345,14 +350,19 @@ export function mount(container) {
   }
 
   resize();
-  introStart = performance.now();
-  seedIntroBubbles();
+  introStart = null;
+  if (introImage.complete) {
+    seedIntroBubbles();
+  }
   rafId = requestAnimationFrame(frame);
 
   window.addEventListener('resize', resize);
   canvas.addEventListener('pointerdown', onPointerDown);
   prefersReduced.addEventListener('change', onMotionChange);
-  introImage.addEventListener('load', updateEmitter);
+  introImage.addEventListener('load', () => {
+    updateEmitter();
+    seedIntroBubbles();
+  });
 
   return () => {
     cancelAnimationFrame(rafId);

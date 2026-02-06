@@ -57,6 +57,7 @@ export function mount(container) {
   let lastTime = performance.now();
   let rafId = null;
   let autoTimer = 0;
+  let autoPrimed = false;
 
   function resize() {
     width = container.clientWidth;
@@ -147,7 +148,11 @@ export function mount(container) {
 
     ctx.save();
     ctx.globalCompositeOperation = 'screen';
-    if (autoTimer >= 3000) {
+    if (!autoPrimed) {
+      spawnBloom(width * 0.5, height * 0.5);
+      autoPrimed = true;
+      autoTimer = 0;
+    } else if (autoTimer >= 3000) {
       spawnBloom(width * 0.5, height * 0.5);
       autoTimer = 0;
     }
